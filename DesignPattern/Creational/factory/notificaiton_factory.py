@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from copy import deepcopy
 
 
 class NotificationFactory:
@@ -15,6 +16,9 @@ class Notification(ABC):
     def send(self, message):
         pass
 
+    def clone(self):
+        return deepcopy(self)
+
 
 class SMSNotification(Notification):
     def send(self, message):
@@ -30,9 +34,15 @@ def main() -> None:
     sms = NotificationFactory.create_notification("SMS")
     email = NotificationFactory.create_notification("Email")
 
+    my_sms_notification = SMSNotification()
+    my_sms_notification.send("Hello")
+
     sms.send("OTP is 829902")
     email.send("OTP is 829902")
 
-    
+    new_email_copied_object = email.clone()
+    new_email_copied_object.send("Hoolad")
+
+
 if __name__ == '__main__':
     main()

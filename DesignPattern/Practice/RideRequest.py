@@ -1,23 +1,40 @@
-from Uber import VehicleFactory, Vehicle
+from Uber import VehicleFactory, Vehicle  # Factory Design Pattern
 from Payment import PaymentGateway, PaymentGatewayFactory
+from Location import Location
+from copy import deepcopy
 
 
 class RideRequest:
-    def __init__(self, vehicle_type: str = "", payment_method: str = None, pickup_time=None, features=None):
+    def __init__(self, vehicle_type: str = "", payment_method: str = None, pickup_location: Location = None,
+                 drop_location: Location = None, arrival_time=None, features=None):
         self.vehicle_type = vehicle_type
-        self.payment_method = payment_method
-        self.pickup_time = pickup_time
+        self.pickup_location = pickup_location
+        self.drop_location = drop_location
+        self.arrival_time = arrival_time
         self.features = features or []
+        self.payment_method = payment_method
+
+    def clone(self):  # Prototype Design Pattern
+        return deepcopy(self)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.vehicle_type}, {self.payment_method}, {self.pickup_time}, {self.features})"
+        return f"{self.__class__.__name__}({self.pickup_location}, {self.drop_location}, {self.vehicle_type}, {self.payment_method}, {self.arrival_time}, {self.features})"
 
 
+# Builder Design Pattern
 class RideRequestBuilder:
     def __init__(self):
         self.ride_request = RideRequest()
 
-    def set_vehicle_tye(self, vehicle_type: Vehicle):
+    def set_pickup_location(self, pickup: Location):
+        self.ride_request.pickup_location = pickup
+        return self
+
+    def set_drop_location(self, drop: Location):
+        self.ride_request.drop_location = drop
+        return self
+
+    def set_vehicle_type(self, vehicle_type: Vehicle):
         self.ride_request.vehicle_type = vehicle_type
         return self
 
@@ -25,8 +42,8 @@ class RideRequestBuilder:
         self.ride_request.payment_method = payment_method
         return self
 
-    def set_pickup_time(self, pickup_time):
-        self.ride_request.pickup_time = pickup_time
+    def set_arrival_time(self, arrival_time):
+        self.ride_request.arrival_time = arrival_time
         return self
 
     def add_features(self, feature):
@@ -40,11 +57,18 @@ class RideRequestBuilder:
 def main() -> None:
     vehicle_object = VehicleFactory.create_vehicle_ride("BookAny")
     payment_object = PaymentGatewayFactory.create_payment_gateway("Stripe")
-    ride_request: RideRequest = RideRequestBuilder().set_vehicle_tye(vehicle_object).set_payment_method(payment_object).set_pickup_time("8:30 PM").add_features("Luggage Carrier").add_features("Child Seat").build()
+
+    pickup_location = Location(38.8951, -77.0364)
+    drop_location = Location(39.8921, -78.0354)
+
+    ride_request: RideRequest = (RideRequestBuilder().set_pickup_location(pickup_location).
+                                 set_drop_location(drop_location).set_vehicle_type(vehicle_object).
+                                 set_payment_method(payment_object).set_arrival_time("3").
+                                 add_features("Luggage Carrier").add_features("Child Seat").build())
     print(ride_request)
     vehicle_object.ride()
     payment_object.process_payment(100)
 
 
-if __name__  == '__main__':
+if __name__ == '__main__':
     main()
