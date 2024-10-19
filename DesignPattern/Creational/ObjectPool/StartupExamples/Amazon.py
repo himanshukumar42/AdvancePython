@@ -83,7 +83,7 @@ def process_payments(pool: APIClientPool, amount: int, currency: str, source: st
 
 
 def main() -> None:
-    api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    api_key = ""
     pool = APIClientPool(api_key=api_key, max_clients=5)
 
     threads = []
