@@ -56,7 +56,9 @@ class RideRequestBuilder:
 
 def main() -> None:
     vehicle_object = VehicleFactory.create_vehicle_ride("BookAny")
+    new_vehicle_object = vehicle_object.clone()         # implementing prototype design pattern
     payment_object = PaymentGatewayFactory.create_payment_gateway("Stripe")
+    new_payment_object = payment_object.clone()         # implementing prototype design pattern
 
     pickup_location = Location(38.8951, -77.0364)
     drop_location = Location(39.8921, -78.0354)

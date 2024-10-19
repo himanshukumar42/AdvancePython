@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
+from copy import deepcopy
 
 
 class PaymentGateway(ABC):
     @abstractmethod
     def process_payment(self, amount):
         pass
+
+    def clone(self):
+        return deepcopy(self)
 
     def __repr__(self):
         return f"{self.__class__.__name__}()"

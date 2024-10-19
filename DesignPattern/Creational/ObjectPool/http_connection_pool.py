@@ -1,5 +1,8 @@
 import queue
+import random
 import threading
+import time
+
 import requests
 
 
@@ -61,6 +64,7 @@ class HTTPConnectionPool(metaclass=SingletonMeta):
 
 
 def fetch_data(url: str, pool: HTTPConnectionPool):
+    time.sleep(random.uniform(5, 8))
     connection: HTTPConnection = pool.get_connection()
     if connection:
         response = connection.send_request("GET", url)
@@ -70,13 +74,29 @@ def fetch_data(url: str, pool: HTTPConnectionPool):
 
 
 def main() -> None:
-    pool = HTTPConnectionPool(max_connections=3)
+    pool = HTTPConnectionPool(max_connections=1)
 
     urls = [
         "https://jsonplaceholder.typicode.com/todos/1",
         "https://jsonplaceholder.typicode.com/todos/2",
         "https://jsonplaceholder.typicode.com/todos/3",
-        "https://jsonplaceholder.typicode.com/todos/4"
+        "https://jsonplaceholder.typicode.com/todos/4",
+        "https://jsonplaceholder.typicode.com/todos/1",
+        "https://jsonplaceholder.typicode.com/todos/2",
+        "https://jsonplaceholder.typicode.com/todos/3",
+        "https://jsonplaceholder.typicode.com/todos/4",
+        "https://jsonplaceholder.typicode.com/todos/1",
+        "https://jsonplaceholder.typicode.com/todos/2",
+        "https://jsonplaceholder.typicode.com/todos/3",
+        "https://jsonplaceholder.typicode.com/todos/4",
+        "https://jsonplaceholder.typicode.com/todos/1",
+        "https://jsonplaceholder.typicode.com/todos/2",
+        "https://jsonplaceholder.typicode.com/todos/3",
+        "https://jsonplaceholder.typicode.com/todos/4",
+        "https://jsonplaceholder.typicode.com/todos/1",
+        "https://jsonplaceholder.typicode.com/todos/2",
+        "https://jsonplaceholder.typicode.com/todos/3",
+        "https://jsonplaceholder.typicode.com/todos/4",
     ]
     threads = []
     for url in urls:

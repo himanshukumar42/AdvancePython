@@ -1,11 +1,15 @@
 import random
 from abc import ABC, abstractmethod
+from copy import deepcopy
 
 
 class Vehicle(ABC):
     @abstractmethod
     def ride(self):
         pass
+
+    def clone(self):        # for implementing Prototype Design Pattern
+        return deepcopy(self)
 
     def __repr__(self):
         return f"{self.__class__.__name__}()"
