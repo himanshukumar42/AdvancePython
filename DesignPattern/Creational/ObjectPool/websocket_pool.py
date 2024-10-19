@@ -87,7 +87,7 @@ def handle_stock_price_updates(pool: WebsocketClientPool, stock_symbol: str):
 
 
 def main() -> None:
-    websocket_uri = "wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV"
+    websocket_uri = "ws://localhost:8765"
     pool = WebsocketClientPool(uri=websocket_uri, max_connection=2)
 
     stock_symbols = ["AAPL", "GOOGL", "TSLA", "AMZN", "MSFT"]
